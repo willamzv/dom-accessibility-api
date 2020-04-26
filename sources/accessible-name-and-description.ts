@@ -5,6 +5,7 @@ import ArrayFrom from "./polyfills/array.from";
 import SetLike from "./polyfills/SetLike";
 import getRole from "./getRole";
 import {
+	queryIdRefs,
 	isElement,
 	isHTMLInputElement,
 	isHTMLSelectElement,
@@ -98,39 +99,12 @@ function isHidden(
 }
 
 /**
- *
- * @param {Node} node -
- * @param {string} attributeName -
- * @returns {Element[]} -
- */
-function idRefs(node: Node, attributeName: string): Element[] {
-	if (isElement(node) && node.hasAttribute(attributeName)) {
-		// safe due to hasAttribute check
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const ids = node.getAttribute(attributeName)!.split(" ");
-
-		return (
-			ids
-				// safe since it can't be null for an Element
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				.map((id) => node.ownerDocument!.getElementById(id))
-				.filter(
-					(element: Element | null): element is Element => element !== null
-					// TODO: why does this not narrow?
-				) as Element[]
-		);
-	}
-
-	return [];
-}
-
-/**
  * All defined children. This include childNodes as well as owned (portaled) trees
  * via aria-owns
  * @param node
  */
 function queryChildNodes(node: Node): Node[] {
-	return ArrayFrom(node.childNodes).concat(idRefs(node, "aria-owns"));
+	return ArrayFrom(node.childNodes).concat(queryIdRefs(node, "aria-owns"));
 }
 
 /**
@@ -186,7 +160,7 @@ function querySelectorAllSubtree(
 ): Element[] {
 	const elements = [];
 
-	for (const root of [element, ...idRefs(element, "aria-owns")]) {
+	for (const root of [element, ...queryIdRefs(element, "aria-owns")]) {
 		elements.push(...ArrayFrom(root.querySelectorAll(selectors)));
 	}
 
@@ -429,7 +403,7 @@ export function computeTextAlternative(
 		}
 
 		// 2B
-		const labelElements = idRefs(current, "aria-labelledby");
+		const labelElements = queryIdRefs(current, "aria-labelledby");
 		if (!context.isReferenced && labelElements.length > 0) {
 			return labelElements
 				.map((element) =>
