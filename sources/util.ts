@@ -1,3 +1,5 @@
+import getRole from "./getRole";
+
 export function isElement(node: Node | null): node is Element {
 	return (
 		// @ts-ignore
@@ -70,4 +72,14 @@ export function queryIdRefs(node: Node, attributeName: string): Element[] {
 	}
 
 	return [];
+}
+
+export function hasAnyConcreteRoles(
+	node: Node,
+	roles: Array<string | null>
+): node is Element {
+	if (isElement(node)) {
+		return roles.indexOf(getRole(node)) !== -1;
+	}
+	return false;
 }

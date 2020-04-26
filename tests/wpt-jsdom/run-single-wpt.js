@@ -6,7 +6,10 @@ const { specify } = require("mocha-sugar-free");
 const { inBrowserContext } = require("./util.js");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ResourceLoader = require("jsdom/lib/jsdom/browser/resources/resource-loader");
-const { computeAccessibleName } = require("../../dist/");
+const {
+	computeAccessibleName,
+	computeAccessibleDescription,
+} = require("../../dist/");
 
 const reporterPathname = "/resources/testharnessreport.js";
 
@@ -97,6 +100,7 @@ function createJSDOM(urlPrefix, testPath, expectFail) {
 		return new Promise((resolve, reject) => {
 			const errors = [];
 
+			window.computeAccessibleDescription = computeAccessibleDescription;
 			window.computeAccessibleName = computeAccessibleName;
 
 			window.shimTest = () => {
