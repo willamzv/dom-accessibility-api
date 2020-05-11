@@ -1,5 +1,13 @@
 # dom-accessibility-api changelog
 
+## 0.4.4
+
+### Patch Changes
+
+- [`e79f620`](https://github.com/eps1lon/dom-accessibility-api/commit/e79f6209667b3b2de656a73dec0eea37c65d48a9) [#208](https://github.com/eps1lon/dom-accessibility-api/pull/208) Thanks [@eps1lon](https://github.com/eps1lon)! - Add support for node 14
+
+* [`2c6a23b`](https://github.com/eps1lon/dom-accessibility-api/commit/2c6a23b3ec3e514d7db631e393749fac0ab33b5b) [#200](https://github.com/eps1lon/dom-accessibility-api/pull/200) Thanks [@eps1lon](https://github.com/eps1lon)! - Add `module` field
+
 ## 0.4.3
 
 ### Patch Changes
